@@ -19,7 +19,12 @@ public class MapConstants
 	private static final int DEFAULT_WALL = 100;
 		public static final int HORIZONTAL_WALL = DEFAULT_WALL + 1;
 		public static final int VERTICAL_WALL = DEFAULT_WALL + 2;
-
+		public static final int CROSS_WALL = DEFAULT_WALL + 3;
+			public static final int TOP_LEFT_CROSS_WALL = CROSS_WALL + 2;
+			public static final int TOP_RIGHT_CROSS_WALL = CROSS_WALL + 1;
+			public static final int BOTTOM_LEFT_CROSS_WALL = CROSS_WALL + 3;
+			public static final int BOTTOM_RIGHT_CROSS_WALL = CROSS_WALL + 4;
+		
 	private static final int BOUNDARY_WALL = DEFAULT_WALL + 100;
 		public static final int LEFT_BOUNDARY_WALL = BOUNDARY_WALL + 1;
 		public static final int RIGHT_BOUNDARY_WALL = BOUNDARY_WALL + 2;

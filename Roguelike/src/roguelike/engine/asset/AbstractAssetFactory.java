@@ -1,6 +1,7 @@
-package roguelike.engine;
+package roguelike.engine.asset;
 
 import java.util.Map;
+
 
 public abstract class AbstractAssetFactory<K, V> implements AssetFactory<K, V>{
 	private V defaultAsset;

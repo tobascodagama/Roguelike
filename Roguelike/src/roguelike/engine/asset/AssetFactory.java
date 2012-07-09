@@ -1,4 +1,4 @@
-package roguelike.engine;
+package roguelike.engine.asset;
 
 import java.util.Map;
 

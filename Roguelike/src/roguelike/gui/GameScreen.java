@@ -2,15 +2,20 @@ package roguelike.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
+import roguelike.engine.asset.AssetManager;
+import roguelike.engine.asset.TileFactory;
 import roguelike.engine.world.Map;
 import roguelike.engine.world.World;
-import roguelike.engine.AssetManager;
+import roguelike.exceptions.AssetInitializationException;
 import roguelike.exceptions.MapIndexOutOfBoundsException;
-import roguelike.exceptions.UnitializedGraphicsException;
+import roguelike.exceptions.UninitializedAssetManagerException;
 
 public class GameScreen extends JPanel 
 {
+	AssetManager<Integer, Image> tiles = new AssetManager<Integer, Image>(new TileFactory(), "assets/graphics/tiles/tile.txt");
+	
 	private final Dimension bounds = new Dimension(
 			GraphicConstants.SCREEN_WIDTH, GraphicConstants.SCREEN_HEIGHT);
 	World world;
@@ -23,6 +28,16 @@ public class GameScreen extends JPanel
 		setMaximumSize(bounds);
 		setPreferredSize(bounds);
 
+		try {
+			tiles.initialize();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AssetInitializationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		int tileWidth = (int) ((bounds.getWidth() - 2 * GraphicConstants.SCREEN_BORDER) / world
 				.getMap().getWidth());
 		int tileHeight = (int) ((bounds.getHeight() - 2 * GraphicConstants.SCREEN_BORDER) / world
@@ -36,34 +51,36 @@ public class GameScreen extends JPanel
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		try {
-
 			Map map = world.getMap();
-			for (int i = 0; i < map.getWidth(); i++) {
-				for (int j = 0; j < map.getHeight(); j++) {
-					
-					int x = (int) (20 + (i * tileSize.getWidth()));
-					int y = (int) (20 + (j * tileSize.getHeight()));
-
-					int tileID = map.get(i, j);
-
-					System.out.printf("%5d ", tileID);
-					g.drawImage(AssetManager.getImageForTile(tileID), x, y,
-							(int) tileSize.getWidth(),
-							(int) tileSize.getHeight(), null);
-
+			
+			try
+			{	
+				for (int i = 0; i < map.getWidth(); i++) 
+				{
+					for (int j = 0; j < map.getHeight(); j++) 
+					{
+						
+						int x = (int) (20 + (i * tileSize.getWidth()));
+						int y = (int) (20 + (j * tileSize.getHeight()));
+	
+						int tileID = map.get(i, j);
+	
+						System.out.printf("%5d ", tileID);
+						g.drawImage(tiles.getAsset(tileID), x, y,
+								(int) tileSize.getWidth(),
+								(int) tileSize.getHeight(), null);
+	
+					}
+	
+					System.out.println("\n\n");
 				}
-
-				System.out.println("\n\n");
 			}
-		}
 
-		catch (UnitializedGraphicsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MapIndexOutOfBoundsException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			catch(MapIndexOutOfBoundsException e)
+			{
+				e.printStackTrace();
+			} catch (UninitializedAssetManagerException e) {
+				e.printStackTrace();
+			}
 	}
 }
