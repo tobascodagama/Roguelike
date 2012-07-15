@@ -1,10 +1,13 @@
 package roguelike.engine.world;
 
 import java.awt.Point;
+import java.io.IOException;
 import java.util.*;
 
 import roguelike.engine.entity.Entity;
 import roguelike.engine.entity.PlayerCharacter;
+import roguelike.exceptions.AssetInitializationException;
+import roguelike.exceptions.UninitializedAssetManagerException;
 
 /**
  * World exists as a manager of the map and entities. 
@@ -20,7 +23,7 @@ public class World
 	
 	int currentId;
 	
-	public World()
+	public World() throws UninitializedAssetManagerException, IOException, AssetInitializationException
 	{
 		map = new Map();
 		player = new PlayerCharacter(0, new Point(0, 0));

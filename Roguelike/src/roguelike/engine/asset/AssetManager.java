@@ -4,10 +4,10 @@ import java.awt.Image;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
-import roguelike.engine.world.MapConstants;
 import roguelike.exceptions.AssetInitializationException;
 import roguelike.exceptions.UninitializedAssetManagerException;
 
@@ -19,12 +19,27 @@ public class AssetManager<K, V> {
 
 	private boolean initialized = false;
 
-	public AssetManager(AssetFactory<K, V> factory, String fileLoc) {
+	public AssetManager(AssetFactory<K, V> factory, String fileLoc) throws IOException, AssetInitializationException 
+	{
+		this(factory, fileLoc, true);
+	}
+	
+	public AssetManager(AssetFactory<K, V> factory, String fileLoc, boolean initialize) throws IOException, AssetInitializationException
+	{
 		this.factory = factory;
 		assets = new HashMap<K, V>();
 		this.fileLoc = fileLoc;
+		if(initialize)
+		{
+			initialize();
+		}
 	}
 
+	public V getDefaultAsset()
+	{
+		return factory.getDefaultAsset();
+	}
+	
 	public V getAsset(K key) throws UninitializedAssetManagerException {
 		if (!initialized)
 			throw new UninitializedAssetManagerException();
@@ -35,8 +50,11 @@ public class AssetManager<K, V> {
 	}
 
 	public void initialize() throws IOException, AssetInitializationException {
-		loadAssets();
-		initialized = true;
+		if(!initialized)
+		{
+			loadAssets();
+			initialized = true;
+		}
 	}
 
 	/**
@@ -84,7 +102,7 @@ public class AssetManager<K, V> {
 			AssetEntry<K, V> entry = factory.loadAsset(path, lineNumber, line);
 			factory.setDefaultAsset(entry.getValue());
 			assets.put(entry.getKey(), entry.getValue());
-
+			
 			return true;
 		}
 		
@@ -114,5 +132,15 @@ public class AssetManager<K, V> {
 				}
 			}
 		}
+	}
+	
+	public String toString()
+	{
+		String output = "";
+		for(Entry<K, V> entry : assets.entrySet())
+		{
+			output += entry.getKey() + " - " + entry.getValue() + "\n";
+		}
+		return output;
 	}
 }

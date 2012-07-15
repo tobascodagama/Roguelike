@@ -1,10 +1,7 @@
-package roguelike.engine.world;
+package roguelike.engine.world.tile;
 
-public class MapConstants 
+public class TileConstants
 {
-	public static final int DEFAULT_MAP_WIDTH = 20;
-	public static final int DEFAULT_MAP_HEIGHT = 20;
-	
 	/**
 	 * Tile IDs
 	 * These are used to represent the different types 
@@ -13,10 +10,14 @@ public class MapConstants
 	 */
 		
 	//Null tile
-	public static final int NULL_TILE = -1;
+	public static final int NULL_TILE = 0;
 	
+	//Floors
+	private static final int DEFAULT_FLOOR = 100;
+		public static final int FLOOR_GREY = DEFAULT_FLOOR + 1;
+		public static final int FLOOR_BLACK = DEFAULT_FLOOR + 2;
 	//Walls
-	private static final int DEFAULT_WALL = 100;
+	private static final int DEFAULT_WALL = DEFAULT_FLOOR + 100;
 		public static final int HORIZONTAL_WALL = DEFAULT_WALL + 1;
 		public static final int VERTICAL_WALL = DEFAULT_WALL + 2;
 		public static final int CROSS_WALL = DEFAULT_WALL + 3;
@@ -30,9 +31,17 @@ public class MapConstants
 		public static final int RIGHT_BOUNDARY_WALL = BOUNDARY_WALL + 2;
 		public static final int TOP_BOUNDARY_WALL = BOUNDARY_WALL + 3;
 		public static final int BOTTOM_BOUNDARY_WALL = BOUNDARY_WALL + 4;
-			
- 
-	//Floors
-	private static final int DEFAULT_FLOOR = 0;
-		public static final int FLOOR_GREY = DEFAULT_FLOOR + 1;
+
+	
+	/**
+	 * Tile Types
+	 * These are used to represent the different properties of tiles in the map.
+	 * It represents how something can be interacted with on the map.
+	 */
+		
+	public static final int NON_INTERACTABLE = 0;
+	
+	//Describes that the tile cannot be moved onto.
+	public static final int NON_CLIPPABLE = 1;
+	public static final int MOVABLE = 2;
 }

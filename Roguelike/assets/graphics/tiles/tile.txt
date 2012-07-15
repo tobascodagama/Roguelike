@@ -7,28 +7,29 @@
 setpath assets/graphics/tiles/
 
 # load null tile
-default -1 nulltile.png
+default 0 0 nulltile.png
 
 	# load regular walls
 	setpath ./walls/
 	
-	#	100 defaultwall.png
-		101 horizontalwall.png
-		102 verticalwall.png
-		103 crosswall.png
+	#	200 1 defaultwall.png
+		201 1 horizontalwall.png
+		202 1 verticalwall.png
+		203 1 crosswall.png
 		
 		# load boundary walls
 		setpath ./boundary/
 			
-			201 leftwall.png
-			202 rightwall.png
-			203 topwall.png
-			204 bottomwall.png
+			301 1 leftwall.png
+			302 1 rightwall.png
+			303 1 topwall.png
+			304 1 bottomwall.png
 			
 		setpath ../
 	
 	# load floors
 	setpath ../floors/
 	
-		0 defaultfloor.png
-		1 greyfloor.png
+		100 0 defaultfloor.png
+		101 0 greyfloor.png
+		102 0 blackfloor.png

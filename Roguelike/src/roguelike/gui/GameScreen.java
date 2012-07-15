@@ -5,17 +5,16 @@ import java.awt.*;
 import java.io.IOException;
 
 import roguelike.engine.asset.AssetManager;
-import roguelike.engine.asset.TileFactory;
 import roguelike.engine.world.Map;
 import roguelike.engine.world.World;
+import roguelike.engine.world.tile.Tile;
+import roguelike.engine.world.tile.TileFactory;
 import roguelike.exceptions.AssetInitializationException;
 import roguelike.exceptions.MapIndexOutOfBoundsException;
 import roguelike.exceptions.UninitializedAssetManagerException;
 
 public class GameScreen extends JPanel 
 {
-	AssetManager<Integer, Image> tiles = new AssetManager<Integer, Image>(new TileFactory(), "assets/graphics/tiles/tile.txt");
-	
 	private final Dimension bounds = new Dimension(
 			GraphicConstants.SCREEN_WIDTH, GraphicConstants.SCREEN_HEIGHT);
 	World world;
@@ -28,16 +27,6 @@ public class GameScreen extends JPanel
 		setMaximumSize(bounds);
 		setPreferredSize(bounds);
 
-		try {
-			tiles.initialize();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AssetInitializationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		int tileWidth = (int) ((bounds.getWidth() - 2 * GraphicConstants.SCREEN_BORDER) / world
 				.getMap().getWidth());
 		int tileHeight = (int) ((bounds.getHeight() - 2 * GraphicConstants.SCREEN_BORDER) / world
@@ -48,7 +37,8 @@ public class GameScreen extends JPanel
 		setBackground(Color.black);
 	}
 
-	public void paintComponent(Graphics g) {
+	public void paintComponent(Graphics g) 
+	{
 		super.paintComponent(g);
 
 			Map map = world.getMap();
@@ -63,13 +53,25 @@ public class GameScreen extends JPanel
 						int x = (int) (20 + (i * tileSize.getWidth()));
 						int y = (int) (20 + (j * tileSize.getHeight()));
 	
-						int tileID = map.get(i, j);
+						Tile tile = map.get(i, j);
 	
-						System.out.printf("%5d ", tileID);
-						g.drawImage(tiles.getAsset(tileID), x, y,
-								(int) tileSize.getWidth(),
-								(int) tileSize.getHeight(), null);
-	
+						if(tile != null)
+						{
+							//Draw background tile
+							if(tile.getBackgroundTile() != null)
+							{
+								g.drawImage(tile.getBackgroundTile().getImage(), x, y, 
+										(int) tileSize.getWidth(), 
+										(int) tileSize.getHeight(), null);
+							}
+							
+							//Draw main tile
+							g.drawImage(tile.getImage(), x, y,
+									(int) tileSize.getWidth(),
+									(int) tileSize.getHeight(), null);
+		
+							System.out.printf("%5d ", tile.getTileID());
+						}
 					}
 	
 					System.out.println("\n\n");
@@ -78,8 +80,6 @@ public class GameScreen extends JPanel
 
 			catch(MapIndexOutOfBoundsException e)
 			{
-				e.printStackTrace();
-			} catch (UninitializedAssetManagerException e) {
 				e.printStackTrace();
 			}
 	}
