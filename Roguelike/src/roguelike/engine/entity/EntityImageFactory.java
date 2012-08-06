@@ -1,5 +1,6 @@
-package roguelike.engine.world.tile;
+package roguelike.engine.entity;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,30 +14,30 @@ import roguelike.engine.asset.AbstractAssetFactory;
 import roguelike.engine.asset.AssetEntry;
 import roguelike.exceptions.AssetInitializationException;
 
-public class TileFactory extends AbstractAssetFactory<Integer, Tile>
+public class EntityImageFactory extends AbstractAssetFactory<Integer, Image>
 {
-	private Map<Integer, Tile> assets = new HashMap<Integer, Tile>();
+	private Map<Integer, Image> assets = new HashMap<Integer, Image>();
 
-	public AssetEntry<Integer, Tile> loadAsset(String path, int lineNumber,
+	public AssetEntry<Integer, Image> loadAsset(String path, int lineNumber,
 			String line) throws AssetInitializationException
 	{
 		String[] map = line.split(" ");
 		try
 		{
-			int tileID = 0;
-			int tileType = 0;
+			int entityID = 0;
 
 			try
 			{
-				tileID = Integer.parseInt(map[0]);
-				tileType = Integer.parseInt(map[1]);
+				entityID = Integer.parseInt(map[0]);
 			}
+
 			catch (Exception e)
 			{
 				System.err.println("Path, lineNumber, line\n" + path + "\n"
 						+ lineNumber + "\n" + line);
 			}
-			File file = new File(path + map[2]);
+
+			File file = new File(path + map[1]);
 
 			if (!file.exists())
 			{
@@ -48,12 +49,9 @@ public class TileFactory extends AbstractAssetFactory<Integer, Tile>
 
 			BufferedImage image = ImageIO.read(file);
 
-			Tile tile = new Tile(tileID, tileType, image);
+			assets.put(entityID, image);
 
-			assets.put(tileID, tile);
-
-			return new AssetEntry<Integer, Tile>(tileID, tile);
-
+			return new AssetEntry<Integer, Image>(entityID, image);
 		}
 		catch (NumberFormatException ex)
 		{
@@ -65,14 +63,12 @@ public class TileFactory extends AbstractAssetFactory<Integer, Tile>
 		}
 	}
 
-	@Override
-	public Tile getAsset(Integer key)
+	public Image getAsset(Integer key)
 	{
-		return assets.get(key).clone();
+		return assets.get(key);
 	}
 
-	@Override
-	public Map<Integer, Tile> getAssets()
+	public Map<Integer, Image> getAssets()
 	{
 		return assets;
 	}

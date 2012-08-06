@@ -1,0 +1,11 @@
+# Maps the Tile IDs to image file names.
+# Format is: 
+# tileID tileType imagePath
+# path must use / as a separator and must end with a /
+
+# set base path
+setpath assets/graphics/entities
+
+	#load player's images
+	setpath ./player/
+		load 1 playercharacter.png 

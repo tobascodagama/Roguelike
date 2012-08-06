@@ -2,9 +2,11 @@ package roguelike.gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import roguelike.engine.asset.AssetManager;
+import roguelike.engine.entity.Entity;
 import roguelike.engine.world.Map;
 import roguelike.engine.world.World;
 import roguelike.engine.world.tile.Tile;
@@ -13,7 +15,7 @@ import roguelike.exceptions.AssetInitializationException;
 import roguelike.exceptions.MapIndexOutOfBoundsException;
 import roguelike.exceptions.UninitializedAssetManagerException;
 
-public class GameScreen extends JPanel 
+public class GameScreen extends JPanel
 {
 	private final Dimension bounds = new Dimension(
 			GraphicConstants.SCREEN_WIDTH, GraphicConstants.SCREEN_HEIGHT);
@@ -32,6 +34,10 @@ public class GameScreen extends JPanel
 		int tileHeight = (int) ((bounds.getHeight() - 2 * GraphicConstants.SCREEN_BORDER) / world
 				.getMap().getHeight());
 
+		this.setFocusable(true);
+		this.addKeyListener(world.getController());
+		this.requestFocusInWindow();
+		
 		tileSize = new Dimension(tileWidth, tileHeight);
 
 		setBackground(Color.black);
@@ -42,6 +48,8 @@ public class GameScreen extends JPanel
 		super.paintComponent(g);
 
 			Map map = world.getMap();
+			
+			Entity player = world.getPlayer();  
 			
 			try
 			{	
@@ -70,11 +78,20 @@ public class GameScreen extends JPanel
 									(int) tileSize.getWidth(),
 									(int) tileSize.getHeight(), null);
 		
-							System.out.printf("%5d ", tile.getTileID());
+							//System.out.printf("%5d ", tile.getTileID());
+						}
+						
+						int playerX = (int) player.getPosition().getX();
+						int playerY = (int) player.getPosition().getY();
+						if(player != null &&  playerX == i && playerY == j)
+						{
+							g.drawImage(player.getImage(), x, y, 
+									(int) tileSize.getWidth(), 
+									(int) tileSize.getHeight(), null);
 						}
 					}
 	
-					System.out.println("\n\n");
+					//System.out.println("\n\n");
 				}
 			}
 
