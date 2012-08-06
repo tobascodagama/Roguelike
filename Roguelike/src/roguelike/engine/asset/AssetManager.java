@@ -93,9 +93,20 @@ public class AssetManager<K, V>
 
 		else if (line.startsWith("load"))
 		{
-			line = line.split(" ", 2)[1];
+			line = line.split(" ", 2)[1].trim();
 
-			factory.loadAsset(path, lineNumber, line);
+			if (line.startsWith("default"))
+			{
+				line = line.split(" ", 2)[1].trim();
+				factory.setDefaultAsset(factory.loadAsset(path, lineNumber,
+						line).getValue());
+			}
+
+			else
+			{
+				factory.loadAsset(path, lineNumber, line);
+			}
+
 			return true;
 		}
 
@@ -123,11 +134,6 @@ public class AssetManager<K, V>
 			}
 
 			return true;
-		}
-
-		else if (line.startsWith("default"))
-		{
-			return parseAsCommand("load " + line.split(" ", 2)[1], lineNumber);
 		}
 
 		else

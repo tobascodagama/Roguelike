@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.LinkedList;
 import java.util.List;
 
+import roguelike.engine.Driver;
 import roguelike.engine.world.World;
 
 public class Controller implements KeyListener
@@ -59,7 +60,7 @@ public class Controller implements KeyListener
 
 			else if (keyCode == KeyEvent.VK_ESCAPE)
 			{
-				System.exit(0);
+				Driver.running = false;
 			}
 		}
 	}

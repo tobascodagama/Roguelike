@@ -9,10 +9,16 @@ import roguelike.gui.GameFrame;
 
 public class Driver
 {
-	static boolean running = true;
+	public static boolean running = true;
 
 	public static void main(String[] args) throws IOException,
 			UninitializedAssetManagerException, AssetInitializationException
+	{
+		startGame();
+	}
+
+	public static void startGame() throws AssetInitializationException,
+			UninitializedAssetManagerException, IOException
 	{
 		World world = new World();
 		GameFrame frame = new GameFrame(world);
@@ -30,5 +36,12 @@ public class Driver
 			{
 			}
 		}
+
+		closeGame(world);
+	}
+
+	public static void closeGame(World world)
+	{
+		// do things like saving the map, etc
 	}
 }

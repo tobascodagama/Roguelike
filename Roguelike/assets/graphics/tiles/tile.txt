@@ -7,7 +7,7 @@
 setpath assets/graphics/tiles/
 
 # load null tile
-default 0 0 nulltile.png
+load default 0 0 nulltile.png
 
 	# load regular walls
 	setpath ./walls/
