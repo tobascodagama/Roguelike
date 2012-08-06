@@ -1,19 +1,15 @@
 package roguelike.gui;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyListener;
-import java.io.IOException;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 
-import roguelike.engine.asset.AssetManager;
+import javax.swing.JPanel;
+
 import roguelike.engine.entity.Entity;
 import roguelike.engine.world.Map;
 import roguelike.engine.world.World;
 import roguelike.engine.world.tile.Tile;
-import roguelike.engine.world.tile.TileFactory;
-import roguelike.exceptions.AssetInitializationException;
-import roguelike.exceptions.MapIndexOutOfBoundsException;
-import roguelike.exceptions.UninitializedAssetManagerException;
 
 public class GameScreen extends JPanel
 {
@@ -22,7 +18,8 @@ public class GameScreen extends JPanel
 	World world;
 	Dimension tileSize;
 
-	public GameScreen(World world) {
+	public GameScreen(World world)
+	{
 		this.world = world;
 
 		setMinimumSize(bounds);
@@ -37,67 +34,59 @@ public class GameScreen extends JPanel
 		this.setFocusable(true);
 		this.addKeyListener(world.getController());
 		this.requestFocusInWindow();
-		
+
 		tileSize = new Dimension(tileWidth, tileHeight);
 
 		setBackground(Color.black);
 	}
 
-	public void paintComponent(Graphics g) 
+	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
 
-			Map map = world.getMap();
-			
-			Entity player = world.getPlayer();  
-			
-			try
-			{	
-				for (int i = 0; i < map.getWidth(); i++) 
+		Map map = world.getMap();
+
+		Entity player = world.getPlayer();
+
+		for (int i = 0; i < map.getWidth(); i++)
+		{
+			for (int j = 0; j < map.getHeight(); j++)
+			{
+
+				int x = (int) (20 + (i * tileSize.getWidth()));
+				int y = (int) (20 + (j * tileSize.getHeight()));
+
+				Tile tile = map.get(i, j);
+
+				if (tile != null)
 				{
-					for (int j = 0; j < map.getHeight(); j++) 
+					// Draw background tile
+					if (tile.getBackgroundTile() != null)
 					{
-						
-						int x = (int) (20 + (i * tileSize.getWidth()));
-						int y = (int) (20 + (j * tileSize.getHeight()));
-	
-						Tile tile = map.get(i, j);
-	
-						if(tile != null)
-						{
-							//Draw background tile
-							if(tile.getBackgroundTile() != null)
-							{
-								g.drawImage(tile.getBackgroundTile().getImage(), x, y, 
-										(int) tileSize.getWidth(), 
-										(int) tileSize.getHeight(), null);
-							}
-							
-							//Draw main tile
-							g.drawImage(tile.getImage(), x, y,
-									(int) tileSize.getWidth(),
-									(int) tileSize.getHeight(), null);
-		
-							//System.out.printf("%5d ", tile.getTileID());
-						}
-						
-						int playerX = (int) player.getPosition().getX();
-						int playerY = (int) player.getPosition().getY();
-						if(player != null &&  playerX == i && playerY == j)
-						{
-							g.drawImage(player.getImage(), x, y, 
-									(int) tileSize.getWidth(), 
-									(int) tileSize.getHeight(), null);
-						}
+						g.drawImage(tile.getBackgroundTile().getImage(), x, y,
+								(int) tileSize.getWidth(),
+								(int) tileSize.getHeight(), null);
 					}
-	
-					//System.out.println("\n\n");
+
+					// Draw main tile
+					g.drawImage(tile.getImage(), x, y,
+							(int) tileSize.getWidth(),
+							(int) tileSize.getHeight(), null);
+
+					// System.out.printf("%5d ", tile.getTileID());
+				}
+
+				int playerX = (int) player.getPosition().getX();
+				int playerY = (int) player.getPosition().getY();
+				if (player != null && playerX == i && playerY == j)
+				{
+					g.drawImage(player.getImage(), x, y,
+							(int) tileSize.getWidth(),
+							(int) tileSize.getHeight(), null);
 				}
 			}
 
-			catch(MapIndexOutOfBoundsException e)
-			{
-				e.printStackTrace();
-			}
+			// System.out.println("\n\n");
+		}
 	}
 }

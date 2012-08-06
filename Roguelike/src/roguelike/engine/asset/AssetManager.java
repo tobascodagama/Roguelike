@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Map.Entry;
 
 import roguelike.exceptions.AssetInitializationException;
+import roguelike.exceptions.IncompleteFactoryInitializationException;
 import roguelike.exceptions.UninitializedAssetManagerException;
 
 public class AssetManager<K, V>
@@ -35,9 +36,20 @@ public class AssetManager<K, V>
 		}
 	}
 
-	public V getDefaultAsset()
+	public V getDefaultAsset() throws UninitializedAssetManagerException
 	{
-		return factory.getDefaultAsset();
+		if (!initialized)
+			throw new UninitializedAssetManagerException();
+
+		V asset = factory.getDefaultAsset();
+
+		if (asset == null && factory.requiresDefaultAsset())
+		{
+			throw new IncompleteFactoryInitializationException(
+					"Factory does not have a default asset.");
+		}
+
+		return asset;
 	}
 
 	public V getAsset(K key) throws UninitializedAssetManagerException
@@ -46,7 +58,7 @@ public class AssetManager<K, V>
 			throw new UninitializedAssetManagerException();
 		V asset = factory.getAsset(key);
 		if (asset == null)
-			asset = factory.getDefaultAsset();
+			asset = getDefaultAsset();
 		return asset;
 	}
 

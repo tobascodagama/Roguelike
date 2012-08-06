@@ -1,8 +1,9 @@
 package roguelike.exceptions;
 
-public class MapIndexOutOfBoundsException extends Exception 
+public class MapIndexOutOfBoundsException extends RuntimeException
 {
-	public MapIndexOutOfBoundsException(String errorMessage) {
+	public MapIndexOutOfBoundsException(String errorMessage)
+	{
 		super(errorMessage);
 	}
 }

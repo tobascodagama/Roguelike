@@ -65,15 +65,18 @@ public class TileFactory extends AbstractAssetFactory<Integer, Tile>
 		}
 	}
 
-	@Override
 	public Tile getAsset(Integer key)
 	{
 		return assets.get(key).clone();
 	}
 
-	@Override
 	public Map<Integer, Tile> getAssets()
 	{
 		return assets;
+	}
+
+	public boolean requiresDefaultAsset()
+	{
+		return true;
 	}
 }

@@ -1,21 +1,26 @@
 package roguelike.exceptions;
 
-public class AssetInitializationException extends Exception{
+public class AssetInitializationException extends RuntimeException
+{
 	private static final long serialVersionUID = 1L;
 
-	public AssetInitializationException() {
+	public AssetInitializationException()
+	{
 		super();
 	}
 
-	public AssetInitializationException(String message, Throwable cause) {
+	public AssetInitializationException(String message, Throwable cause)
+	{
 		super(message, cause);
 	}
 
-	public AssetInitializationException(String message) {
+	public AssetInitializationException(String message)
+	{
 		super(message);
 	}
 
-	public AssetInitializationException(Throwable cause) {
+	public AssetInitializationException(Throwable cause)
+	{
 		super(cause);
 	}
 }

@@ -15,7 +15,6 @@ import roguelike.engine.entity.PlayerCharacter;
 import roguelike.engine.input.Controller;
 import roguelike.engine.world.tile.TileConstants;
 import roguelike.exceptions.AssetInitializationException;
-import roguelike.exceptions.MapIndexOutOfBoundsException;
 import roguelike.exceptions.UninitializedAssetManagerException;
 
 /**
@@ -98,19 +97,10 @@ public class World
 				return;
 			}
 
-			try
+			if (map.get(newPosition).getTileType() != TileConstants.NON_CLIPPABLE)
 			{
-				if (map.get(newPosition).getTileType() != TileConstants.NON_CLIPPABLE)
-				{
-					player.setPosition(newPosition);
-				}
-			}
-			catch (MapIndexOutOfBoundsException exception)
-			{
-				exception.printStackTrace();
+				player.setPosition(newPosition);
 			}
 		}
-
-		System.out.println(player.getPosition());
 	}
 }

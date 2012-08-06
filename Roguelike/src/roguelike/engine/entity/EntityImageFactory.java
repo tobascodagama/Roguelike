@@ -72,4 +72,9 @@ public class EntityImageFactory extends AbstractAssetFactory<Integer, Image>
 	{
 		return assets;
 	}
+
+	public boolean requiresDefaultAsset()
+	{
+		return true;
+	}
 }
