@@ -10,7 +10,7 @@ import roguelike.engine.world.World;
 
 public class Controller implements KeyListener
 {
-	public static final int KEY_DELAY_MILLIS = 300;
+	public static final int KEY_DELAY_MILLIS = 200;
 
 	private World world;
 	private List<KeyEvent> keyQueue = new LinkedList<KeyEvent>();
@@ -24,11 +24,19 @@ public class Controller implements KeyListener
 
 	public void keyPressed(KeyEvent e)
 	{
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - lastKeyPress > KEY_DELAY_MILLIS)
+		if (e.getKeyCode() == KeyEvent.VK_F11)
 		{
-			lastKeyPress = currentTime;
-			keyQueue.add(e);
+			GameDriver.debugging = !GameDriver.debugging;
+		}
+
+		else
+		{
+			long currentTime = System.currentTimeMillis();
+			if (currentTime - lastKeyPress > KEY_DELAY_MILLIS)
+			{
+				lastKeyPress = currentTime;
+				keyQueue.add(e);
+			}
 		}
 
 		e.consume();

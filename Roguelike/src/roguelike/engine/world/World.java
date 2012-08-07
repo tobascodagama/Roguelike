@@ -42,7 +42,7 @@ public class World
 				new EntityImageFactory(), entityFilePath);
 		map = new Map();
 		player = new PlayerCharacter(EntityConstants.PLAYER_CHARACTER,
-				new Point(map.getHeight() / 2, map.getWidth() / 2),
+				new Point(map.getWidth() / 2, map.getHeight() / 2),
 				entityAssets.getAsset(EntityConstants.PLAYER_CHARACTER));
 
 		otherEntities = new ArrayList<Entity>();

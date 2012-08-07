@@ -9,7 +9,7 @@ import roguelike.gui.GameFrame;
 
 public class GameDriver
 {
-	public static final boolean debugging = true;
+	public static boolean debugging = false;
 
 	public static boolean running = true;
 
