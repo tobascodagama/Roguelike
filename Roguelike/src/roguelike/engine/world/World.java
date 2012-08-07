@@ -44,6 +44,7 @@ public class World
 		player = new PlayerCharacter(EntityConstants.PLAYER_CHARACTER,
 				new Point(map.getHeight() / 2, map.getWidth() / 2),
 				entityAssets.getAsset(EntityConstants.PLAYER_CHARACTER));
+
 		otherEntities = new ArrayList<Entity>();
 		controller = new Controller(this);
 	}

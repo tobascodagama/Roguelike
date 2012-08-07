@@ -5,12 +5,12 @@ import java.awt.event.KeyListener;
 import java.util.LinkedList;
 import java.util.List;
 
-import roguelike.engine.Driver;
+import roguelike.engine.GameDriver;
 import roguelike.engine.world.World;
 
 public class Controller implements KeyListener
 {
-	public static final int KEY_DELAY_MILLIS = 100;
+	public static final int KEY_DELAY_MILLIS = 300;
 
 	private World world;
 	private List<KeyEvent> keyQueue = new LinkedList<KeyEvent>();
@@ -60,7 +60,7 @@ public class Controller implements KeyListener
 
 			else if (keyCode == KeyEvent.VK_ESCAPE)
 			{
-				Driver.running = false;
+				GameDriver.running = false;
 			}
 		}
 	}

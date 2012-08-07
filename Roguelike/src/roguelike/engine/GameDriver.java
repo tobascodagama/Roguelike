@@ -7,8 +7,10 @@ import roguelike.exceptions.AssetInitializationException;
 import roguelike.exceptions.UninitializedAssetManagerException;
 import roguelike.gui.GameFrame;
 
-public class Driver
+public class GameDriver
 {
+	public static final boolean debugging = true;
+
 	public static boolean running = true;
 
 	public static void main(String[] args) throws IOException,
@@ -25,12 +27,12 @@ public class Driver
 
 		while (running)
 		{
-			world.getController().processKeyEvents();
-			frame.repaint();
+			processInput(world);
+			drawWorld(world, frame);
 
 			try
 			{
-				Thread.sleep(100);
+				Thread.sleep(200);
 			}
 			catch (InterruptedException e)
 			{
@@ -38,6 +40,16 @@ public class Driver
 		}
 
 		closeGame(world);
+	}
+
+	public static void processInput(World world)
+	{
+		world.getController().processKeyEvents();
+	}
+
+	public static void drawWorld(World world, GameFrame frame)
+	{
+		frame.repaint();
 	}
 
 	public static void closeGame(World world)

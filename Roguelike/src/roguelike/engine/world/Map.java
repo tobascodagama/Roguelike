@@ -19,8 +19,8 @@ import roguelike.exceptions.UninitializedAssetManagerException;
 
 public class Map
 {
-	public static final int DEFAULT_MAP_WIDTH = 20;
-	public static final int DEFAULT_MAP_HEIGHT = 20;
+	public static final int DEFAULT_MAP_WIDTH = 15;// 20;
+	public static final int DEFAULT_MAP_HEIGHT = 15;// 20;
 
 	private int width;
 	private int height;
