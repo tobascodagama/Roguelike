@@ -10,7 +10,7 @@ public class TileConstants
 	 */
 		
 	//Null tile
-	public static final int NULL_TILE = 0;
+	public static final int DEFAULT_TILE = 0;
 	
 	//Floors
 	private static final int DEFAULT_FLOOR = 100;

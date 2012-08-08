@@ -19,8 +19,8 @@ import roguelike.exceptions.UninitializedAssetManagerException;
 
 public class Map
 {
-	public static final int DEFAULT_MAP_WIDTH = 9;// 20;
-	public static final int DEFAULT_MAP_HEIGHT = 12;// 20;
+	public static final int DEFAULT_MAP_WIDTH = 20;
+	public static final int DEFAULT_MAP_HEIGHT = 20;
 
 	private int width;
 	private int height;
@@ -49,42 +49,50 @@ public class Map
 		map = new Tile[width][height];
 
 		// Set entire map to null
-		for (int i = 0; i < width; i++)
+		fillRectWithTile(TileConstants.DEFAULT_TILE, 0, 0, width - 1,
+				height - 1);
+
+		// fill walls
+		fillRectWithTile(TileConstants.BOTTOM_BOUNDARY_WALL, 1, 0, width - 1, 0);
+		fillRectWithTile(TileConstants.TOP_BOUNDARY_WALL, 1, height - 1,
+				width - 1, height - 1);
+
+		fillRectWithTile(TileConstants.RIGHT_BOUNDARY_WALL, 0, 1, 0, height - 1);
+		fillRectWithTile(TileConstants.LEFT_BOUNDARY_WALL, width - 1, 0,
+				width - 1, height - 1);
+
+		// fill center
+		fillRectWithTile(TileConstants.FLOOR_GREY, 1, 1, width - 2, height - 2);
+
+		// set corners
+		setTile(TileConstants.FLOOR_BLACK, 0, 0);
+		setTile(TileConstants.FLOOR_BLACK, 0, height - 1);
+		setTile(TileConstants.FLOOR_BLACK, width - 1, 0);
+		setTile(TileConstants.FLOOR_BLACK, width - 1, height - 1);
+
+	}
+
+	public void setTile(Tile tile, int x, int y)
+	{
+		map[x][y] = tile;
+	}
+
+	public void setTile(int tileID, int x, int y)
+			throws UninitializedAssetManagerException
+	{
+		map[x][y] = tiles.getAsset(tileID);
+	}
+
+	public void fillRectWithTile(int tileID, int startX, int startY, int endX,
+			int endY) throws UninitializedAssetManagerException
+	{
+		for (int x = startX; x <= endX; x++)
 		{
-			for (int j = 0; j < height; j++)
+			for (int y = startY; y <= endY; y++)
 			{
-				map[i][j] = tiles.getDefaultAsset();
+				setTile(tileID, x, y);
 			}
 		}
-
-		for (int i = 1; i < width - 1; i++)
-			for (int j = 1; j < height - 1; j++)
-				map[i][j] = tiles.getAsset(TileConstants.FLOOR_GREY);
-
-		for (int i = 1; i < width - 1; i++)
-		{
-			map[i][0] = tiles.getAsset(TileConstants.BOTTOM_BOUNDARY_WALL);
-			map[i][height - 1] = tiles
-					.getAsset(TileConstants.TOP_BOUNDARY_WALL);
-		}
-
-		for (int j = 1; j < height - 1; j++)
-		{
-			map[0][j] = tiles.getAsset(TileConstants.RIGHT_BOUNDARY_WALL);
-			map[width - 1][j] = tiles
-					.getAsset(TileConstants.LEFT_BOUNDARY_WALL);
-		}
-
-		map[0][0] = tiles.getAsset(TileConstants.FLOOR_BLACK);
-		map[width - 1][0] = tiles.getAsset(TileConstants.FLOOR_BLACK);
-		map[0][height - 1] = tiles.getAsset(TileConstants.FLOOR_BLACK);
-		map[width - 1][height - 1] = tiles.getAsset(TileConstants.FLOOR_BLACK);
-
-		/*
-		 * for (int i = 1; i < width - 1; i++) { map[i][height / 2 - 1] = tiles
-		 * .getAsset(TileConstants.HORIZONTAL_WALL); map[i][height / 2 -
-		 * 1].setBackgroundTile(tiles .getAsset(TileConstants.FLOOR_GREY)); }
-		 */
 	}
 
 	public Tile get(int x, int y) throws MapIndexOutOfBoundsException

@@ -53,13 +53,12 @@ public class GameScreen extends JPanel
 
 		Entity player = world.getPlayer();
 		Point playerPosition = player.getPosition();
+		Point viewport = world.getViewportPosition();
 
 		int xCount = 0;
 
-		int maxTileX = playerPosition.x
-				+ GraphicConstants.TILES_DISPLAYED_WIDTH / 2;
-		int minTileX = playerPosition.x
-				- GraphicConstants.TILES_DISPLAYED_WIDTH / 2;
+		int maxTileX = viewport.x + GraphicConstants.TILES_DISPLAYED_WIDTH / 2;
+		int minTileX = viewport.x - GraphicConstants.TILES_DISPLAYED_WIDTH / 2;
 
 		int currentTileX = minTileX;
 
@@ -77,16 +76,15 @@ public class GameScreen extends JPanel
 			{
 				int yCount = 0;
 
-				int maxTileY = playerPosition.y
+				int maxTileY = viewport.y
 						+ GraphicConstants.TILES_DISPLAYED_HEIGHT / 2;
-				int minTileY = playerPosition.y
+				int minTileY = viewport.y
 						- GraphicConstants.TILES_DISPLAYED_HEIGHT / 2;
 
 				int currentTileY = minTileY;
 
 				while (yCount < GraphicConstants.TILES_DISPLAYED_HEIGHT
-						&& currentTileY <= playerPosition.y
-								+ GraphicConstants.TILES_DISPLAYED_HEIGHT / 2)
+						&& currentTileY <= maxTileY)
 				{
 					if (currentTileY < 0 || currentTileY > map.getHeight() - 1)
 					{
@@ -98,6 +96,7 @@ public class GameScreen extends JPanel
 					{
 						int x = (int) (xCount * tileSize.getWidth());
 						int y = (int) (yCount * tileSize.getHeight());
+
 						Tile tile = map.get(currentTileX, currentTileY);
 
 						if (tile != null)
@@ -118,11 +117,21 @@ public class GameScreen extends JPanel
 
 							if (GameDriver.debugging)
 							{
+								Color previousColor = g.getColor();
 								g.setColor(Color.YELLOW);
 								g.drawString(
 										currentTileX + ", " + currentTileY,
 										(int) (x + tileSize.getWidth() / 2) - 10,
 										(int) (y + tileSize.getHeight() / 2));
+
+								// draw border
+								g.setColor(Color.BLACK);
+								g.drawLine(x, y,
+										(int) (x + tileSize.getWidth()), y);
+								g.drawLine(x, y, x,
+										(int) (y + tileSize.getHeight()));
+
+								g.setColor(previousColor);
 							}
 							// System.out.printf("%5d ", tile.getTileID());
 						}
@@ -145,83 +154,5 @@ public class GameScreen extends JPanel
 				// System.out.println("\n\n");
 			}
 		}
-
-		/*
-		 * for (int i = playerPosition.x -
-		 * GraphicConstants.TILES_DISPLAYED_WIDTH / 2; i < playerPosition.x +
-		 * GraphicConstants.TILES_DISPLAYED_WIDTH / 2 && xCount <
-		 * GraphicConstants.TILES_DISPLAYED_WIDTH; i++) { if (xCount >
-		 * GraphicConstants.TILES_DISPLAYED_WIDTH - 1) { break; }
-		 * 
-		 * else if (i < 0 || i > map.getWidth() - 1) { i--; continue; }
-		 * 
-		 * else { int yCount = 0; for (int j = playerPosition.y -
-		 * GraphicConstants.TILES_DISPLAYED_HEIGHT / 2; j < playerPosition.y +
-		 * GraphicConstants.TILES_DISPLAYED_HEIGHT / 2 && yCount <
-		 * GraphicConstants.TILES_DISPLAYED_HEIGHT; j++) {
-		 * 
-		 * if (yCount > GraphicConstants.TILES_DISPLAYED_HEIGHT - 1) { break; }
-		 * 
-		 * else if (j < 0 || j > map.getHeight() - 1) { j--; continue; }
-		 * 
-		 * else { int x = (int) (GraphicConstants.SCREEN_BORDER + (xCount *
-		 * tileSize .getWidth())); int y = (int) (GraphicConstants.SCREEN_BORDER
-		 * + (yCount * tileSize .getHeight()));
-		 * 
-		 * Tile tile = map.get(i, j);
-		 * 
-		 * if (tile != null) { // Draw background tile if
-		 * (tile.getBackgroundTile() != null) { g.drawImage(
-		 * tile.getBackgroundTile().getImage(), x, y, (int) tileSize.getWidth(),
-		 * (int) tileSize.getHeight(), null); }
-		 * 
-		 * // Draw main tile g.drawImage(tile.getImage(), x, y, (int)
-		 * tileSize.getWidth(), (int) tileSize.getHeight(), null);
-		 * 
-		 * // System.out.printf("%5d ", tile.getTileID()); }
-		 * 
-		 * int playerX = (int) player.getPosition().getX(); int playerY = (int)
-		 * player.getPosition().getY(); if (player != null && playerX == xCount
-		 * && playerY == yCount) { g.drawImage(player.getImage(), x, y, (int)
-		 * tileSize.getWidth(), (int) tileSize.getHeight(), null); }
-		 * System.out.println(xCount + " " + yCount + " " + i + " " + j);
-		 * 
-		 * yCount++;
-		 * 
-		 * // System.out.println(); }
-		 * 
-		 * // System.out.println("\n\n"); }
-		 * 
-		 * xCount++; } }
-		 */
-
-		/*
-		 * for (int i = 0; i < map.getWidth(); i++) { for (int j = 0; j <
-		 * map.getHeight(); j++) {
-		 * 
-		 * int x = (int) (20 + (i * tileSize.getWidth())); int y = (int) (20 +
-		 * (j * tileSize.getHeight()));
-		 * 
-		 * Tile tile = map.get(i, j);
-		 * 
-		 * if (tile != null) { // Draw background tile if
-		 * (tile.getBackgroundTile() != null) {
-		 * g.drawImage(tile.getBackgroundTile().getImage(), x, y, (int)
-		 * tileSize.getWidth(), (int) tileSize.getHeight(), null); }
-		 * 
-		 * // Draw main tile g.drawImage(tile.getImage(), x, y, (int)
-		 * tileSize.getWidth(), (int) tileSize.getHeight(), null);
-		 * 
-		 * // System.out.printf("%5d ", tile.getTileID()); }
-		 * 
-		 * int playerX = (int) player.getPosition().getX(); int playerY = (int)
-		 * player.getPosition().getY(); if (player != null && playerX == i &&
-		 * playerY == j) { g.drawImage(player.getImage(), x, y, (int)
-		 * tileSize.getWidth(), (int) tileSize.getHeight(), null); }
-		 * 
-		 * // System.out.println(); }
-		 * 
-		 * // System.out.println("\n\n"); }
-		 */
 	}
 }
