@@ -145,24 +145,31 @@ public class AssetManager<K, V>
 	private void loadAssets() throws IOException, AssetInitializationException
 	{
 		File file = new File(fileLoc);
-		BufferedReader fileStream = new BufferedReader(new FileReader(file));
-		String line;
-
-		int lineNumber = 0;
-
-		while ((line = fileStream.readLine()) != null)
+		
+		//implement try-with-resources pattern to silently close readers
+		try(FileReader fReader = new FileReader(file))
 		{
-			line = line.trim();
-			// Line isn't empty
-			if (!line.equals(""))
+			try(BufferedReader fileStream = new BufferedReader(fReader))
 			{
-				lineNumber++;
+				String line;
 
-				if (!parseAsCommand(line, lineNumber))
+				int lineNumber = 0;
+
+				while ((line = fileStream.readLine()) != null)
 				{
-					throw new AssetInitializationException(
-							"Unable to parse line " + lineNumber + " in file "
-									+ file.getPath());
+					line = line.trim();
+					// Line isn't empty
+					if (!line.equals(""))
+					{
+						lineNumber++;
+
+						if (!parseAsCommand(line, lineNumber))
+						{
+							throw new AssetInitializationException(
+									"Unable to parse line " + lineNumber + " in file "
+											+ file.getPath());
+						}
+					}
 				}
 			}
 		}

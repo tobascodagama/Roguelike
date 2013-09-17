@@ -2,6 +2,11 @@ package roguelike.exceptions;
 
 public class IncompleteFactoryInitializationException extends RuntimeException
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7154971039116680322L;
+
 	public IncompleteFactoryInitializationException()
 	{
 

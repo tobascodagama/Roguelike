@@ -9,6 +9,11 @@ import java.awt.*;
 
 public class GameFrame extends JFrame
 {		
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7383856423461450776L;
+
 	public GameFrame(World world)
 	{
 		JPanel screen = new GameScreen(world);

@@ -15,6 +15,10 @@ import roguelike.engine.world.tile.Tile;
 
 public class GameScreen extends JPanel
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1480979238938628702L;
 	private final Dimension bounds = new Dimension(
 			GraphicConstants.PIXEL_SCREEN_WIDTH,
 			GraphicConstants.PIXEL_SCREEN_HEIGHT);
